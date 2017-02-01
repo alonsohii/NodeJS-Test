@@ -5,28 +5,12 @@ var config = require('../../config'); // get our config file
 var express 	= require('express');
 var app         = express();
 app.set('superSecret', config.secret); // secret variable
-var mysql 	= require('mysql');
-
-var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : 'nose1234',
-  database : 'projectb'
-});
-
-
-connection.connect(function(err){
-	if(!err) {
-	    console.log("Database is connected ... nn");    
-	} else {
-	    console.log("Error connecting database ... nn");    
-	}
-});
+var db = require('../connection');
 
 exports.CatalogoPaises = function(req,res){
 	console.log('Llamando funcion');
-connection.query('SELECT * FROM V_PAISESESTADOS', function(err, rows, fields) {
-connection.end();
+db.query('SELECT * FROM V_PAISESESTADOS', function(err, rows, fields) {
+db.end();
 
 res.json(users);
   if (!err)
