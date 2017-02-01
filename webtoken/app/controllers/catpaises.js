@@ -5,40 +5,34 @@ var config = require('../../config'); // get our config file
 var express 	= require('express');
 var app         = express();
 app.set('superSecret', config.secret); // secret variable
+var mysql 	= require('mysql');
 
-exports.autentificar = function(req, res) {
+var connection = mysql.createConnection({
+  host     : 'localhost',
+  user     : 'root',
+  password : 'nose1234',
+  database : 'projectb'
+});
 
-	// find the user
-//	console.log(req.query);
-	User.findOne({
-		name: req.query.name
-	}, function(err, user) {
 
-		if (err) throw err;
+connection.connect(function(err){
+	if(!err) {
+	    console.log("Database is connected ... nn");    
+	} else {
+	    console.log("Error connecting database ... nn");    
+	}
+});
 
-		if (!user) {
-			res.json({ success: false, message: 'Authentication failed. User not found.' });
-		} else if (user) {
+exports.CatalogoPaises = function(req,res){
+	console.log('Llamando funcion');
+connection.query('SELECT * FROM V_PAISESESTADOS', function(err, rows, fields) {
+connection.end();
 
-			// check if password matches
-			if (user.password != req.query.password) {
-				res.json({ success: false, message: 'Authentication failed. Wrong password.' });
-			} else {
-
-				// if user is found and password is right
-				// create a token
-				var token = jwt.sign(user, app.get('superSecret'), {
-					expiresIn: 86400 // expires in 24 hours
-				});
-
-				res.json({
-					success: true,
-					message: 'Enjoy your token!',
-					token: token
-				});
-			}		
-
-		}
-
-	});
+res.json(users);
+  if (!err)
+    console.log('The solution is: ', rows);
+  else
+    console.log('Error while performing Query.');
+  });
 }
+

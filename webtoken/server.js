@@ -7,10 +7,13 @@ var bodyParser  = require('body-parser');
 var morgan      = require('morgan');
 var mongoose    = require('mongoose');
 var config = require('./config'); // get our config file
-
+var path    = require("path");
 
 var User   = require('./app/models/user'); // get our mongoose model
+
 var AutCtrl = require('./app/controllers/aut');
+var PaisesCtrl = require('./app/controllers/catpaises');
+
 var Middleware = require('./app/middleware');
 
 // =================================================================
@@ -46,11 +49,23 @@ app.get('/setup', function(req, res) {
 	});
 });
 
+
+app.get('/paises', PaisesCtrl.CatalogoPaises );
+
 // basic route (http://localhost:8080)
-app.get('/', function(req, res) {
-	res.send('Hello! The API is at http://localhost:' + port + '/api');
+
+
+
+app.get('/registro',function(req,res){
+  res.sendFile(path.join(__dirname+'/app/views/registro.html'));
+  //__dirname : It will resolve to your project folder.
 });
 
+
+app.get('/demo',function(req,res){
+  res.sendFile(path.join(__dirname+'/app/views/registro.html'));
+  //__dirname : It will resolve to your project folder.
+});
 // ---------------------------------------------------------
 // get an instance of the router for api routes
 // ---------------------------------------------------------
