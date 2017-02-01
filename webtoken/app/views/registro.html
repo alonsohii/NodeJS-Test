@@ -7,7 +7,18 @@
     <link rel="stylesheet" href="assets/adicional.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
   <script>
+$( document ).ready(function() {
+     $("#registro").click(function(){
+    
 
+  $.post( "test.php", { name: "John", time: "2pm" })
+  .done(function( data ) {
+    //alert( "Data Loaded: " + data );
+  });
+
+});
+
+});
   $(document).ready(function() {
     $('#registrationForm').formValidation({
         framework: 'bootstrap',
@@ -87,6 +98,11 @@
         }
     });
 });
+
+
+
+
+
   </script>
 </head>
 <body>
@@ -112,8 +128,8 @@
 <div class="container">
   <div class="row">
 <div class="col-xs-12" id="demoContainer">
-                <form id="registrationForm" class="form-horizontal fv-form fv-form-bootstrap" novalidate="novalidate">
-                  <button type="submit" class="fv-hidden-submit" style="display: none; width: 0px; height: 0px;"></button>
+                <form id="registrationForm2" class="form-horizontal fv-form fv-form-bootstrap" novalidate="novalidate">
+                 <!--  <button type="submit" class="fv-hidden-submit" style="display: none; width: 0px; height: 0px;"></button> -->
     <div class="form-group">
         <label class="col-xs-3 control-label">Full name</label>
         <div class="col-xs-4">
@@ -192,7 +208,7 @@
 
     <div class="form-group">
         <div class="col-xs-9 col-xs-offset-3">
-            <button type="submit" class="btn btn-primary" name="signup" value="Sign up">Submit</button>
+            <button class="btn btn-primary" name="signup" value="Sign up" id='registro' >Submit</button>
         </div>
     </div>
 </form>

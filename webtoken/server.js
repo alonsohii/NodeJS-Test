@@ -12,6 +12,7 @@ var path    = require("path");
 var User   = require('./app/models/user'); // get our mongoose model
 
 var AutCtrl = require('./app/controllers/aut');
+var UsuariosCtrl = require('./app/controllers/users');
 var PaisesCtrl = require('./app/controllers/catpaises');
 
 var Middleware = require('./app/middleware');
@@ -50,7 +51,9 @@ app.get('/setup', function(req, res) {
 });
 
 
+
 app.get('/paises', PaisesCtrl.CatalogoPaises );
+app.get('/usuario', UsuariosCtrl.InsertarUsuario );
 
 // basic route (http://localhost:8080)
 
