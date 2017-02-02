@@ -1,21 +1,25 @@
 // =================================================================
 // get the packages we need ========================================
 // =================================================================
-var express 	= require('express');
-var app         = express();
-var bodyParser  = require('body-parser');
-var morgan      = require('morgan');
-var mongoose    = require('mongoose');
-var config = require('./config'); // get our config file
-var path    = require("path");
+var express 	= require('express'),
+    app         = express(),
+    bodyParser  = require('body-parser'),
+    morgan      = require('morgan'),
+    mongoose    = require('mongoose'),
+    config = require('./config'), // get our config file
+    path    = require("path"),
+    AutCtrl = require('./app/controllers/aut'),
+    UsuariosCtrl = require('./app/controllers/users'),
+    PaisesCtrl = require('./app/controllers/catpaises'),
+    Middleware = require('./app/middleware');
 
-var User   = require('./app/models/user'); // get our mongoose model
+    const cors = require('cors')
 
-var AutCtrl = require('./app/controllers/aut');
-var UsuariosCtrl = require('./app/controllers/users');
-var PaisesCtrl = require('./app/controllers/catpaises');
 
-var Middleware = require('./app/middleware');
+
+    const corsOptions = {
+  origin: 'http://localhost:8080'
+}
 
 // =================================================================
 // configuration ===================================================
@@ -30,44 +34,26 @@ app.use(bodyParser.json());
 
 // use morgan to log requests to the console
 app.use(morgan('dev'));
+app.use(cors(corsOptions));
 
 // =================================================================
 // routes ==========================================================
 // =================================================================
-app.get('/setup', function(req, res) {
-
-	// create a sample u
-	var nick = new User({ 
-		name: 'chilo', 
-		password: '1234',
-		admin: true 
-	});
-	nick.save(function(err) {
-		if (err) throw err;
-
-		console.log('User saved successfully');
-		res.json({ success: true });
-	});
-});
-
-
-
+app.get('/setup', UsuariosCtrl.UsuarioMongoDb);
 app.get('/paises', PaisesCtrl.CatalogoPaises );
+
+// Catalogos
 app.get('/usuario', UsuariosCtrl.InsertarUsuario );
 
-// basic route (http://localhost:8080)
+//
 
 
-
-app.get('/registro',function(req,res){
-  res.sendFile(path.join(__dirname+'/app/views/registro.html'));
-  //__dirname : It will resolve to your project folder.
+// Rutas
+app.get('/registro',function(req,res){  res.sendFile(path.join(__dirname+'/app/views/registro.html'));
 });
-
 
 app.get('/demo',function(req,res){
   res.sendFile(path.join(__dirname+'/app/views/registro.html'));
-  //__dirname : It will resolve to your project folder.
 });
 // ---------------------------------------------------------
 // get an instance of the router for api routes
@@ -110,3 +96,8 @@ app.use('/api', apiRoutes);
 // =================================================================
 app.listen(port);
 console.log('Magic happens at http://localhost:' + port);
+
+
+process.on('uncaughtException', function (err) {
+  console.log('Caught exception: ' + err);
+});
