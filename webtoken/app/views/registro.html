@@ -6,6 +6,8 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="assets/adicional.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script>
+        <script type="text/javascript" src="http://alasql.org/console/alasql.min.js"></script>
   <script>
 $( document ).ready(function() {
      $("#registro").click(function(){
@@ -20,7 +22,7 @@ $( document ).ready(function() {
 
 });
   $(document).ready(function() {
-    $('#registrationForm').formValidation({
+    /*$('#registrationForm').formValidation({
         framework: 'bootstrap',
         icon: {
             valid: 'glyphicon glyphicon-ok',
@@ -96,7 +98,7 @@ $( document ).ready(function() {
                 }
             }
         }
-    });
+    });*/
 });
 
 
@@ -131,7 +133,7 @@ $( document ).ready(function() {
                 <form id="registrationForm2" class="form-horizontal fv-form fv-form-bootstrap" novalidate="novalidate">
                  <!--  <button type="submit" class="fv-hidden-submit" style="display: none; width: 0px; height: 0px;"></button> -->
     <div class="form-group">
-        <label class="col-xs-3 control-label">Full name</label>
+        <label class="col-xs-3 control-label">Full namse</label>
         <div class="col-xs-4">
             <input type="text" class="form-control" name="firstName" placeholder="First name" />
         </div>
@@ -160,6 +162,49 @@ $( document ).ready(function() {
             <input type="password" class="form-control" name="password" />
         </div>
     </div>
+    <script>
+
+
+    $(function() {
+
+        $.when( $.get("http://localhost:8080/paises", function(data, status){
+           
+            jQuery.data( document, "paises",data );
+              //console.log("Data: " + data + "\nStatus: " + status);
+          })).then(function( data, textStatus, jqXHR ) {
+             Paises();
+         // alert( jqXHR.status ); // Alerts 200
+        });
+          
+
+         
+         
+    });
+    function Paises(){
+
+        $.each( jQuery.data( document, "paises"), function( i, l ){
+          console.log( "Index #" + i + ": " + l );
+        });
+
+    }
+
+
+    </script>
+
+        <div class="form-group">
+        <label class="col-xs-3 control-label">Color</label>
+        <div class="col-xs-5 selectContainer">
+            <select class="form-control" name="color">
+                <option value="">Choose a color</option>
+                <option value="black">Black</option>
+                <option value="green">Green</option>
+                <option value="red">Red</option>
+                <option value="yellow">Yellow</option>
+                <option value="white">White</option>
+            </select>
+        </div>
+    </div>
+
 
     <div class="form-group">
         <label class="col-xs-3 control-label">Gender</label>

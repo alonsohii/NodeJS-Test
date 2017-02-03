@@ -6,7 +6,7 @@ var express 	= require('express');
 var app         = express();
 app.set('superSecret', config.secret); // secret variable
 var db = require('../connection');
-
+var User   = require('../models/user'); // get our mongoose model
 
 
 exports.InsertarUsuario = function(req,res){
@@ -33,12 +33,32 @@ var usuario = {
 };
 
 db.query('INSERT INTO bp_personas SET ?', usuario, function(err,ress){
-  if(err) throw err;
+  if(err) res.status(400); res.send(err);  throw err; 
 
   console.log('Last insert ID:', ress.insertId);
   if(!err){
    res.json({ok:true});
+  }else {
+
+    res.status(400); res.send(err);
   }
 });
+}
+
+exports.UsuarioMongoDb = function(req,res){
+
+  var nick = new User({ 
+    name: 'chilo', 
+    password: '1234',
+    admin: true 
+  });
+  nick.save(function(err) {
+    if (err) res.status(400); res.send(err);  throw err;
+
+    console.log('User saved successfully');
+    res.json({ success: true });
+  });
+
+
 }
 
