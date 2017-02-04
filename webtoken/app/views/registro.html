@@ -2,14 +2,18 @@
 <head>
   <title>Express HTML</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="assets/adicional.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script>
-        <script type="text/javascript" src="http://alasql.org/console/alasql.min.js"></script>
+        <script type="text/javascript" src="http://alasql.org/codex/lib/alasql/alasql.min.js"></script>
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css"> 
+ <!-- <link rel="stylesheet" href="assets/adicional.css"> -->
+
   <script>
 $( document ).ready(function() {
+    debugger;
      $("#registro").click(function(){
     
 
@@ -162,8 +166,8 @@ $( document ).ready(function() {
             <input type="password" class="form-control" name="password" />
         </div>
     </div>
-    <script>
 
+    <script>
 
     $(function() {
 
@@ -172,7 +176,9 @@ $( document ).ready(function() {
             jQuery.data( document, "paises",data );
               //console.log("Data: " + data + "\nStatus: " + status);
           })).then(function( data, textStatus, jqXHR ) {
-             Paises();
+            // Paises();
+            debugger;
+              GroupBy(jQuery.data( document, "paises"));
          // alert( jqXHR.status ); // Alerts 200
         });
           
@@ -180,11 +186,40 @@ $( document ).ready(function() {
          
          
     });
+
+    function Where(data,value){
+     return  _.filter(data, function(item, index) {
+         return _.contains([value], item.iso);
+    });
+
+    }
+
+    function GroupBy(data){
+
+      return  _
+        .chain(data)
+        .groupBy('Nombre')
+        .map(function(value, key) {
+            return {
+                Pais: key,
+                Id: value[0].id,
+                Iso: value[0].iso
+               // paises: _.pluck(value, 'Nombre')
+            }
+        })
+        .value();
+    }
     function Paises(){
 
         $.each( jQuery.data( document, "paises"), function( i, l ){
           console.log( "Index #" + i + ": " + l );
         });
+
+        var res = alasql('SELECT * \
+FROM ? \
+GROUP BY iso ',jQuery.data( document, "paises"));
+        debugger;
+    console.log(res);
 
     }
 
