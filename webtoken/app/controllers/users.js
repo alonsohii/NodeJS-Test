@@ -33,14 +33,17 @@ var usuario = {
 };
 
 db.query('INSERT INTO bp_personas SET ?', usuario, function(err,ress){
-  if(err) res.status(400); res.send(err);  throw err; 
+  if(err)  throw err; 
 
   console.log('Last insert ID:', ress.insertId);
   if(!err){
+     console.log('bien' );
    res.json({ok:true});
+ 
   }else {
-
+  console.log('error');
     res.status(400); res.send(err);
+
   }
 });
 }

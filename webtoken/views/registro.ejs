@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>Express HTML</title>
+  <title> <%= title %></title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script>
@@ -178,7 +178,8 @@ $( document ).ready(function() {
           })).then(function( data, textStatus, jqXHR ) {
             // Paises();
             debugger;
-              GroupBy(jQuery.data( document, "paises"));
+            ComboPaises();
+             // GroupBy(jQuery.data( document, "paises"));
          // alert( jqXHR.status ); // Alerts 200
         });
           
@@ -186,7 +187,7 @@ $( document ).ready(function() {
          
          
     });
-
+3
     function Where(data,value){
      return  _.filter(data, function(item, index) {
          return _.contains([value], item.iso);
@@ -194,21 +195,6 @@ $( document ).ready(function() {
 
     }
 
-    function GroupBy(data){
-
-      return  _
-        .chain(data)
-        .groupBy('Nombre')
-        .map(function(value, key) {
-            return {
-                Pais: key,
-                Id: value[0].id,
-                Iso: value[0].iso
-               // paises: _.pluck(value, 'Nombre')
-            }
-        })
-        .value();
-    }
     function Paises(){
 
         $.each( jQuery.data( document, "paises"), function( i, l ){
@@ -221,15 +207,43 @@ GROUP BY iso ',jQuery.data( document, "paises"));
         debugger;
     console.log(res);
 
+
     }
 
 
+
+    function ComboPaises(){
+
+        $.each(   GroupBy(jQuery.data( document, "paises")), function( i, l ){
+          console.log( "Index #" + i + ": " + l );
+          $( "#ComboPaises" ).append( " <option value='"+l.Id+"'>" + l.Pais +"</option>" );
+        });
+
+    }
+
+
+    function GroupBy(data){
+
+      return  _
+        .chain(data)
+        .groupBy('Nombre')
+        .sort('Nombre')
+        .map(function(value, key) {
+            return {
+                Pais: key,
+                Id: value[0].id,
+                Iso: value[0].iso
+               // paises: _.pluck(value, 'Nombre')
+            }
+        })
+        .value();
+    }
     </script>
 
         <div class="form-group">
-        <label class="col-xs-3 control-label">Color</label>
+        <label class="col-xs-3 control-label">Selecciona Pais:</label>
         <div class="col-xs-5 selectContainer">
-            <select class="form-control" name="color">
+            <select class="form-control" name="color" id="ComboPaises">
                 <option value="">Choose a color</option>
                 <option value="black">Black</option>
                 <option value="green">Green</option>

@@ -9,6 +9,9 @@
     "morgan": "^1.7.0",
     "mysql": "*",
     "path":"*",
-    "cors":"*"
+    "cors":"*",
+    "geoip-lite":"*",
+    "request-ip":"*",
+    "ejs":"*"
   }
 }

@@ -11,9 +11,11 @@ var express 	= require('express'),
     AutCtrl = require('./app/controllers/aut'),
     UsuariosCtrl = require('./app/controllers/users'),
     PaisesCtrl = require('./app/controllers/catpaises'),
-    Middleware = require('./app/middleware');
+    Middleware = require('./app/middleware'),
+    ejs = require('ejs');
 
-    const cors = require('cors')
+    const cors = require('cors');
+
 
 
 
@@ -35,26 +37,20 @@ app.use(bodyParser.json());
 // use morgan to log requests to the console
 app.use(morgan('dev'));
 app.use(cors(corsOptions));
-
+app.set('view engine', 'ejs');
 // =================================================================
 // routes ==========================================================
 // =================================================================
 app.get('/setup', UsuariosCtrl.UsuarioMongoDb);
 app.get('/paises', PaisesCtrl.CatalogoPaises );
+app.get('/visitante', PaisesCtrl.Visitante );
 
 // Catalogos
 app.get('/usuario', UsuariosCtrl.InsertarUsuario );
 
-//
 
+Pagina('/registro','registro',{ title: "Registro de Usuarios"});
 
-// Rutas
-app.get('/registro',function(req,res){  res.sendFile(path.join(__dirname+'/app/views/registro.html'));
-});
-
-app.get('/demo',function(req,res){
-  res.sendFile(path.join(__dirname+'/app/views/registro.html'));
-});
 // ---------------------------------------------------------
 // get an instance of the router for api routes
 // ---------------------------------------------------------
@@ -101,3 +97,11 @@ console.log('Magic happens at http://localhost:' + port);
 process.on('uncaughtException', function (err) {
   console.log('Caught exception: ' + err);
 });
+
+function Pagina(url,ruta,param){
+	app.get(url,function(req,res){  
+	// res.set('Content-Type', 'application/javascript');
+	  res.render(ruta, param);
+	//res.sendFile(path.join(__dirname+'/app/views/registro.html'), { name: "example" });
+	});
+}
