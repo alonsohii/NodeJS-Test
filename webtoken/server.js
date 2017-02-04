@@ -49,7 +49,6 @@ app.get('/visitante', PaisesCtrl.Visitante );
 // Catalogos
 app.get('/usuario', UsuariosCtrl.InsertarUsuario );
 
-
 Pagina('/registro','registro',{ title: "Registro de Usuarios"});
 
 // ---------------------------------------------------------
