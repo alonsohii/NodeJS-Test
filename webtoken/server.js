@@ -38,6 +38,7 @@ app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use(cors(corsOptions));
 app.set('view engine', 'ejs');
+app.use(express.static(__dirname + '/public'));
 // =================================================================
 // routes ==========================================================
 // =================================================================
