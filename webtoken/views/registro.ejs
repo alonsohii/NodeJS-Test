@@ -4,105 +4,101 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script>
-        <script type="text/javascript" src="http://alasql.org/codex/lib/alasql/alasql.min.js"></script>
+  <script type="text/javascript" src="http://alasql.org/codex/lib/alasql/alasql.min.js"></script>
+  <script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
+
+   <script type="text/javascript" src=" ../js/adicional.js"></script>
 
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css"> 
- <!-- <link rel="stylesheet" href="assets/adicional.css"> -->
+
+
+  <link rel="stylesheet" href="../css/adicional.css">
 
   <script>
-$( document ).ready(function() {
-    debugger;
-     $("#registro").click(function(){
-    
-
-  $.post( "test.php", { name: "John", time: "2pm" })
-  .done(function( data ) {
-    //alert( "Data Loaded: " + data );
-  });
-
-});
-
-});
-  $(document).ready(function() {
-    /*$('#registrationForm').formValidation({
-        framework: 'bootstrap',
-        icon: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        fields: {
-            firstName: {
-                row: '.col-xs-4',
-                validators: {
-                    notEmpty: {
-                        message: 'The first name is required'
-                    }
-                }
-            },
-            lastName: {
-                row: '.col-xs-4',
-                validators: {
-                    notEmpty: {
-                        message: 'The last name is required'
-                    }
-                }
-            },
-            username: {
-                validators: {
-                    notEmpty: {
-                        message: 'The username is required'
-                    },
-                    stringLength: {
-                        min: 6,
-                        max: 30,
-                        message: 'The username must be more than 6 and less than 30 characters long'
-                    },
-                    regexp: {
-                        regexp: /^[a-zA-Z0-9_\.]+$/,
-                        message: 'The username can only consist of alphabetical, number, dot and underscore'
-                    }
-                }
-            },
-            email: {
-                validators: {
-                    notEmpty: {
-                        message: 'The email address is required'
-                    },
-                    emailAddress: {
-                        message: 'The input is not a valid email address'
-                    }
-                }
-            },
-            password: {
-                validators: {
-                    notEmpty: {
-                        message: 'The password is required'
-                    },
-                    different: {
-                        field: 'username',
-                        message: 'The password cannot be the same as username'
-                    }
-                }
-            },
-            gender: {
-                validators: {
-                    notEmpty: {
-                        message: 'The gender is required'
-                    }
-                }
-            },
-            agree: {
-                validators: {
-                    notEmpty: {
-                        message: 'You must agree with the terms and conditions'
-                    }
-                }
-            }
+  function validar(str,campo){
+    if(str != null && str != ''){
+        if(str.length < 41 &&  str.length > 1){
+            return 'valid';
+            
+        }else{
+            return 'El campo "'+campo+'" debe ser menor a 40 caracteres o mayor a 1.';
         }
-    });*/
+    }else{
+         return 'El campo "'+campo+'" no debe estar vacio.';
+  }
+
+}
+$( document ).ready(function() {
+         $("#Notificacion").hide();
+          $("#Correcto").hide();
+     $("#registro").click(function(){
+        
+          var nombre = $("#firstName").val(),
+              apellidos = $("#lastName").val(),
+              pw = $("#pw").val(),
+              pw2 = $("#pw2").val(),
+              email = $("#email").val(),
+              pais = $("#ComboPaises").val();
+
+              var val;
+              var error = -1;
+
+               val = validar(nombre,'Nombre');
+              if(val=='valid'){
+                val = validar(apellidos,'Apellido');
+                if(val=='valid'){
+                    val = validar(email,'Email');
+                    if(val=='valid'){
+                        val = validar(pw,'Password');
+                        if(val=='valid'){
+                            if(pw==pw2){
+                                error = 0;
+
+                                 $.post( "http://localhost:8080/usuario", CamposJson('#firstName,#lastName,#pw,#email,#ComboPaises'))
+                                  .done(function( data ) {
+                                    //alert( "Data Loaded: " + data );
+                                  });
+                                  val= 'Registro Correcto';
+
+                            }else{
+                                error=1;
+                                val = 'Las contrasenas no coinciden';
+                            }
+                        }else{
+                            error=1;
+                        }
+                    }else{
+                        error=1;
+                    }
+
+                }else{
+                    error=1;
+                }
+
+             }else{
+                error=1;
+             }
+
+             if(error==0){
+                $("#Notificacion").hide();
+                $("#Correcto").show();
+             }else{
+                $("#Notificacion").show();
+                   $("#Correcto").hide();
+                 $("#textnot").text(val);
+             }
+
+
+
+  
+
+             
+         
+
+      });
+
 });
 
 
@@ -131,39 +127,52 @@ $( document ).ready(function() {
 </nav>
 
 
-<div class="container">
+<div class="container containerBorder">
   <div class="row">
 <div class="col-xs-12" id="demoContainer">
-                <form id="registrationForm2" class="form-horizontal fv-form fv-form-bootstrap" novalidate="novalidate">
+  <div class="alert alert-success" id="Correcto">
+    <strong>Bien!</strong> Registro Hecho exitosamente.
+  </div>
+<div class="alert alert-danger" id="Notificacion" >
+  <strong>Error!</strong><p id="textnot" ></p>
+</div>
+                <div id="registrationForm2" class="form-horizontal fv-form fv-form-bootstrap" novalidate="novalidate"  target="none" action="">
                  <!--  <button type="submit" class="fv-hidden-submit" style="display: none; width: 0px; height: 0px;"></button> -->
     <div class="form-group">
-        <label class="col-xs-3 control-label">Full namse</label>
+        <label class="col-xs-3 control-label">Full name</label>
         <div class="col-xs-4">
-            <input type="text" class="form-control" name="firstName" placeholder="First name" />
+            <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First name" />
         </div>
         <div class="col-xs-4">
-            <input type="text" class="form-control" name="lastName" placeholder="Last name" />
+            <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last name" />
         </div>
     </div>
 
-    <div class="form-group">
+   <!-- <div class="form-group">
         <label class="col-xs-3 control-label">Username</label>
         <div class="col-xs-5">
             <input type="text" class="form-control" name="username" />
         </div>
-    </div>
+    </div> -->
 
     <div class="form-group">
         <label class="col-xs-3 control-label">Email address</label>
         <div class="col-xs-5">
-            <input type="text" class="form-control" name="email" />
+            <input type="text" class="form-control" name="email" id="email" />
         </div>
     </div>
 
     <div class="form-group">
         <label class="col-xs-3 control-label">Password</label>
         <div class="col-xs-5">
-            <input type="password" class="form-control" name="password" />
+            <input type="password" class="form-control" name="pw" id="pw" />
+        </div>
+    </div>
+
+     <div class="form-group">
+        <label class="col-xs-3 control-label">Repeat Password</label>
+        <div class="col-xs-5">
+            <input type="password" class="form-control" name="pw2"  id="pw2" />
         </div>
     </div>
 
@@ -177,7 +186,7 @@ $( document ).ready(function() {
               //console.log("Data: " + data + "\nStatus: " + status);
           })).then(function( data, textStatus, jqXHR ) {
             // Paises();
-            debugger;
+         
             ComboPaises();
              // GroupBy(jQuery.data( document, "paises"));
          // alert( jqXHR.status ); // Alerts 200
@@ -195,32 +204,15 @@ $( document ).ready(function() {
 
     }
 
-    function Paises(){
-
-        $.each( jQuery.data( document, "paises"), function( i, l ){
-          console.log( "Index #" + i + ": " + l );
-        });
-
-        var res = alasql('SELECT * \
-FROM ? \
-GROUP BY iso ',jQuery.data( document, "paises"));
-        debugger;
-    console.log(res);
-
-
-    }
-
 
 
     function ComboPaises(){
 
         $.each(   GroupBy(jQuery.data( document, "paises")), function( i, l ){
-          console.log( "Index #" + i + ": " + l );
           $( "#ComboPaises" ).append( " <option value='"+l.Id+"'>" + l.Pais +"</option>" );
         });
 
     }
-
 
     function GroupBy(data){
 
@@ -244,20 +236,15 @@ GROUP BY iso ',jQuery.data( document, "paises"));
         <label class="col-xs-3 control-label">Selecciona Pais:</label>
         <div class="col-xs-5 selectContainer">
             <select class="form-control" name="color" id="ComboPaises">
-                <option value="">Choose a color</option>
-                <option value="black">Black</option>
-                <option value="green">Green</option>
-                <option value="red">Red</option>
-                <option value="yellow">Yellow</option>
-                <option value="white">White</option>
+               
             </select>
         </div>
     </div>
 
 
     <div class="form-group">
-        <label class="col-xs-3 control-label">Gender</label>
-        <div class="col-xs-6">
+       <!--  <label class="col-xs-3 control-label">Gender</label>
+       <div class="col-xs-6">
             <div class="radio">
                 <label>
                     <input type="radio" name="gender" value="male" /> Male
@@ -273,10 +260,10 @@ GROUP BY iso ',jQuery.data( document, "paises"));
                     <input type="radio" name="gender" value="other" /> Other
                 </label>
             </div>
-        </div>
+        </div> -->
     </div>
 
-    <div class="form-group">
+   <!-- <div class="form-group">
         <label class="col-xs-3 control-label">Terms of use</label>
         <div class="col-xs-9">
             <div style="border: 1px solid #e5e5e5; height: 200px; overflow: auto; padding: 10px;">
@@ -288,9 +275,9 @@ GROUP BY iso ',jQuery.data( document, "paises"));
                 <p>Ad eos alia inermis nominavi, eum nibh docendi definitionem no. Ius eu stet mucius nonumes, no mea facilis philosophia necessitatibus. Te eam vidit iisque legendos, vero meliore deserunt ius ea. An qui inimicus inciderint.</p>
             </div>
         </div>
-    </div>
+    </div>-->
 
-    <div class="form-group">
+   <!-- <div class="form-group">
         <div class="col-xs-6 col-xs-offset-3">
             <div class="checkbox">
                 <label>
@@ -299,13 +286,13 @@ GROUP BY iso ',jQuery.data( document, "paises"));
             </div>
         </div>
     </div>
-
+-->
     <div class="form-group">
         <div class="col-xs-9 col-xs-offset-3">
             <button class="btn btn-primary" name="signup" value="Sign up" id='registro' >Submit</button>
         </div>
     </div>
-</form>
+</div>
     </div>
   </div>
 

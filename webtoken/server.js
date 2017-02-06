@@ -47,7 +47,9 @@ app.get('/paises', PaisesCtrl.CatalogoPaises );
 app.get('/visitante', PaisesCtrl.Visitante );
 
 // Catalogos
-app.get('/usuario', UsuariosCtrl.InsertarUsuario );
+//app.get('/usuario', UsuariosCtrl.InsertarUsuario );
+
+app.post('/usuario', UsuariosCtrl.InsertarUsuario );
 
 Pagina('/registro','registro',{ title: "Registro de Usuarios"});
 
