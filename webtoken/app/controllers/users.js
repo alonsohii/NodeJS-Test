@@ -1,9 +1,5 @@
 var mongoose = require('mongoose'),
     User   = require('../models/user'), // get our mongoose model
-    jwt    = require('jsonwebtoken'), // used to create, sign, and verify tokens
-    config = require('../../config'),// get our config file
-    express 	= require('express'),
-    app         = express(),
     db = require('../connection'),
     User   = require('../models/user'), // get our mongoose model
     Helper   = require('../helpers/general'); // get helper
@@ -11,47 +7,60 @@ var mongoose = require('mongoose'),
 exports.InsertarUsuario = function(req,res){
 
 //connection.query("INSERT INTO `bp_personas` (`idbp_personas`, `username`, `nombre`, `apellido`, `segundoapellido`, `correo`, `pw`, `fkidcatPaises`, `idcatEstado`, `idcatPersonaEstado`, `fecharegistro`, `sexo`, `subcorreo`, `idciudad`, `Ciudad`) VALUES (NULL, NULL, 'Mario', 'Hernandez', 'Iniguez', 'alonsohi@hotmail.com', 'mario123', ' 1', '1', '0', '2017-02-14 00:00:00', '1', 'demo@hotmail.com', NULL, 'mexicali');", function(err, rows, fields) {
-var data = req.body;
+  var data = req.body;
 
-var usuario = {
+  var usuario = {
 
- 
-  username: null,
-  nombre: data.firstName, 
-  apellido: data.lastName, 
-  segundoapellido: null,
-  correo:data.email, 
-  pw: data.pw, 
-  fkidcatPaises: data.ComboPaises,
-  idcatEstado:1, 
-  idcatPersonaEstado:0,
-  //fecharegistro:null, 
-  sexo:null, 
-  subcorreo:null, 
-  idciudad:null, 
-  Ciudad:null,
-  ip:null
-};
+   
+    username: null,
+    nombre: data.firstName, 
+    apellido: data.lastName, 
+    segundoapellido: null,
+    correo:data.email, 
+    pw: data.pw, 
+    fkidcatPaises: data.ComboPaises,
+    idcatEstado:1, 
+    idcatPersonaEstado:0,
+    //fecharegistro:null, 
+    sexo:null, 
+    subcorreo:null, 
+    idciudad:null, 
+    Ciudad:null,
+    ip:null
+  };
 
-db.query('INSERT INTO bp_personas SET ?', usuario, function(err,ress){
 
-  if(!err){
+  Helper.Query(function(data){
 
-    Helper.Query(function(rows){
+       if(data=='nodata'){
+          
+          db.query('INSERT INTO bp_personas SET ?', usuario, function(err,ress){
 
-        if(rows==null){
-          res.status(400);  res.send(err);  throw err;
-        }else{
-           res.send("");
-          console.log('Last insert ID:', ress.insertId);
-        }
+            if(!err){
 
-    },"SELECT idbp_personas , fecharegistro FROM bp_personas ed  order by ed.idbp_personas desc  LIMIT 1",db);
+              Helper.Query(function(rows){
 
-  }else {
-   res.status(400);  res.send(err);  throw err;
-  }
-});
+                  if(rows==null){
+                    res.status(400);  res.send(err);  throw err;
+                  }else{
+                    console.log('Last insert ID:', ress.insertId);   
+                    res.json({ success: true });     
+                  }
+
+              },"SELECT idbp_personas FROM bp_personas ed  WHERE ed.correo= '"+usuario.correo+"' and ed.nombre = '"+usuario.nombre+"'",db);
+
+            }else {
+             res.status(400);  res.send(err);  throw err;
+            }
+          });
+
+       }else{
+           res.json({ success: false });     
+       }
+
+  },"SELECT idbp_personas FROM bp_personas ed  WHERE ed.correo= '"+usuario.correo+"'",db);
+
+
 }
 
 

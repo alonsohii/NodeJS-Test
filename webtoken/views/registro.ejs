@@ -42,13 +42,31 @@ $(document).ready(function() {
                         val = validar(pw,'Password');
                         if(val=='valid'){
                             if(pw==pw2){
-                                error = 0;
+
 
                                  $.post( "http://localhost:8080/usuario", CamposJson('#firstName,#lastName,#pw,#email,#ComboPaises'))
                                   .done(function( data ) {
-                                    //alert( "Data Loaded: " + data );
+
+                                    if(!data.success){
+                                        error=1;
+                                        val = 'Este correo ya se encuentra registrado.';
+                                    }else{
+                                        error = 0;
+                                        val= 'Registro Correcto';
+                                    }
+
+                                    if(error==0){
+                                        $("#Notificacion").hide();
+                                        $("#Correcto").show();
+                                     }else{
+                                        $("#Notificacion").show();
+                                           $("#Correcto").hide();
+                                         $("#textnot").text(val);
+                                     }
+
+
                                   });
-                                  val= 'Registro Correcto';
+                                  
 
                             }else{
                                 error=1;
@@ -69,14 +87,16 @@ $(document).ready(function() {
                 error=1;
              }
 
-             if(error==0){
-                $("#Notificacion").hide();
-                $("#Correcto").show();
-             }else{
-                $("#Notificacion").show();
-                   $("#Correcto").hide();
-                 $("#textnot").text(val);
-             }
+    if(error==0){
+        $("#Notificacion").hide();
+        $("#Correcto").show();
+    }else{
+        $("#Notificacion").show();
+        $("#Correcto").hide();
+        $("#textnot").text(val);
+    }
+
+
 
       });
 

@@ -1,6 +1,3 @@
-// =================================================================
-// get the packages we need ========================================
-// =================================================================
 var express 	= require('express'),
     app         = express(),
     bodyParser  = require('body-parser'),
@@ -12,15 +9,13 @@ var express 	= require('express'),
     UsuariosCtrl = require('./app/controllers/users'),
     PaisesCtrl = require('./app/controllers/catpaises'),
     Middleware = require('./app/middleware'),
+    Helper   = require('./app/helpers/general'),
     ejs = require('ejs');
-
     const cors = require('cors');
-
     const corsOptions = {
-  origin: 'http://localhost:8080'
-}
+      origin: 'http://localhost:8080'
+    }
 
-console.log(PaisesCtrl.Demo(22212212));
 // =================================================================
 // configuration ===================================================
 // =================================================================
@@ -40,17 +35,18 @@ app.use(express.static(__dirname + '/public'));
 // =================================================================
 // routes ==========================================================
 // =================================================================
-app.get('/setup', UsuariosCtrl.UsuarioMongoDb);
-app.get('/paises', PaisesCtrl.CatalogoPaises );
-app.get('/visitante', PaisesCtrl.Visitante );
-
-// Catalogos
-//app.get('/usuario', UsuariosCtrl.InsertarUsuario );
+// Paginas
 
 app.post('/usuario', UsuariosCtrl.InsertarUsuario );
 
-Pagina('/registro','registro',{ title: "Registro de Usuarios"});
-Pagina('/demo','registro',{ title: "Diferente"});
+Helper.Pagina('/registro','registro',{ title: "Registro de Usuarios"} , app);
+Helper.Pagina('/demo','registro',{ title: "Diferente"},app);
+
+// Paginas Mongo
+
+app.get('/setup', UsuariosCtrl.UsuarioMongoDb);
+app.get('/paises', PaisesCtrl.CatalogoPaises );
+app.get('/visitante', PaisesCtrl.Visitante );
 
 // ---------------------------------------------------------
 // get an instance of the router for api routes
@@ -99,11 +95,3 @@ process.on('uncaughtException', function (err) {
   console.log('Caught exception: ' + err);
 });
 
-function Pagina(url,ruta,param){
-	app.get(url,function(req,res){  
-	// res.set('Content-Type', 'application/javascript');
-	  res.render(ruta, param);
-      res.status(200);
-	//res.sendFile(path.join(__dirname+'/app/views/registro.html'), { name: "example" });
-	});
-}
