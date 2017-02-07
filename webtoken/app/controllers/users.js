@@ -5,48 +5,56 @@ var mongoose = require('mongoose'),
     express 	= require('express'),
     app         = express(),
     db = require('../connection'),
-    User   = require('../models/user'); // get our mongoose model
-
-app.set('superSecret', config.secret); // secret variable
+    User   = require('../models/user'), // get our mongoose model
+    Helper   = require('../helpers/general'); // get helper
 
 exports.InsertarUsuario = function(req,res){
 
 //connection.query("INSERT INTO `bp_personas` (`idbp_personas`, `username`, `nombre`, `apellido`, `segundoapellido`, `correo`, `pw`, `fkidcatPaises`, `idcatEstado`, `idcatPersonaEstado`, `fecharegistro`, `sexo`, `subcorreo`, `idciudad`, `Ciudad`) VALUES (NULL, NULL, 'Mario', 'Hernandez', 'Iniguez', 'alonsohi@hotmail.com', 'mario123', ' 1', '1', '0', '2017-02-14 00:00:00', '1', 'demo@hotmail.com', NULL, 'mexicali');", function(err, rows, fields) {
-console.log(req.body);
+var data = req.body;
+
 var usuario = {
 
  
-  username: 'x',
-  nombre: 'x', 
-  apellido: 'x', 
-  segundoapellido: 'x',
-  correo:'x@hotmail.com', 
-  pw: 'nose123', 
-  fkidcatPaises:1 ,
+  username: null,
+  nombre: data.firstName, 
+  apellido: data.lastName, 
+  segundoapellido: null,
+  correo:data.email, 
+  pw: data.pw, 
+  fkidcatPaises: data.ComboPaises,
   idcatEstado:1, 
   idcatPersonaEstado:0,
-  fecharegistro:'2017-02-14 00:00:00', 
-  sexo:'M', 
-  subcorreo:'S', 
-  idciudad:0, 
-  Ciudad:'x'
+  //fecharegistro:null, 
+  sexo:null, 
+  subcorreo:null, 
+  idciudad:null, 
+  Ciudad:null,
+  ip:null
 };
 
 db.query('INSERT INTO bp_personas SET ?', usuario, function(err,ress){
-  if(err)  throw err; 
 
-  console.log('Last insert ID:', ress.insertId);
   if(!err){
-    // console.log('bien' );
-  // res.json({ok:true});
- 
-  }else {
-  console.log('error');
-  ///  res.status(400); res.send(err);
 
+    Helper.Query(function(rows){
+
+        if(rows==null){
+          res.status(400);  res.send(err);  throw err;
+        }else{
+           res.send("");
+          console.log('Last insert ID:', ress.insertId);
+        }
+
+    },"SELECT idbp_personas , fecharegistro FROM bp_personas ed  order by ed.idbp_personas desc  LIMIT 1",db);
+
+  }else {
+   res.status(400);  res.send(err);  throw err;
   }
 });
 }
+
+
 
 exports.UsuarioMongoDb = function(req,res){
 
