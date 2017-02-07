@@ -52,3 +52,7 @@ function getClientIp(req) {
   }
   return ipAddress;
 };
+exports.Demo = function(demo){
+
+return demo;
+}

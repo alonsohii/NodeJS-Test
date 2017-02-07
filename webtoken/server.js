@@ -16,13 +16,11 @@ var express 	= require('express'),
 
     const cors = require('cors');
 
-
-
-
     const corsOptions = {
   origin: 'http://localhost:8080'
 }
 
+console.log(PaisesCtrl.Demo(22212212));
 // =================================================================
 // configuration ===================================================
 // =================================================================
@@ -52,6 +50,7 @@ app.get('/visitante', PaisesCtrl.Visitante );
 app.post('/usuario', UsuariosCtrl.InsertarUsuario );
 
 Pagina('/registro','registro',{ title: "Registro de Usuarios"});
+Pagina('/demo','registro',{ title: "Diferente"});
 
 // ---------------------------------------------------------
 // get an instance of the router for api routes
@@ -104,6 +103,7 @@ function Pagina(url,ruta,param){
 	app.get(url,function(req,res){  
 	// res.set('Content-Type', 'application/javascript');
 	  res.render(ruta, param);
+      res.status(200);
 	//res.sendFile(path.join(__dirname+'/app/views/registro.html'), { name: "example" });
 	});
 }
