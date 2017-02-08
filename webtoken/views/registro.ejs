@@ -32,7 +32,7 @@ $(document).ready(function() {
 
               var val;
               var error = -1;
-
+debugger;
                val = validar(nombre,'Nombre');
               if(val=='valid'){
                 val = validar(apellidos,'Apellido');
@@ -56,11 +56,12 @@ $(document).ready(function() {
                                     }
 
                                     if(error==0){
-                                        $("#Notificacion").hide();
-                                        $("#Correcto").show();
+                                        $("#Notificacion").hide(350);
+                                        $("#Correcto").show(350);
                                      }else{
-                                        $("#Notificacion").show();
-                                           $("#Correcto").hide();
+                                        $("#Notificacion").hide(350);
+                                        $("#Notificacion").show(350);
+                                           $("#Correcto").hide(350);
                                          $("#textnot").text(val);
                                      }
 
@@ -88,11 +89,13 @@ $(document).ready(function() {
              }
 
     if(error==0){
-        $("#Notificacion").hide();
-        $("#Correcto").show();
+        $("#Notificacion").hide(350);
+        $("#Correcto").show(350);
     }else{
-        $("#Notificacion").show();
-        $("#Correcto").hide();
+        $("#Notificacion").hide(350);
+        $("#Notificacion").show(350);
+        $("#Correcto").hide(350);
+        val = (error == -1) ?  'Error interno del servicio web' :  val;  
         $("#textnot").text(val);
     }
 
