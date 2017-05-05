@@ -9,12 +9,18 @@ app.set('superSecret', config.secret); // secret variable
 exports.autentificar = function(req, res) {
 
 	// find the user
-//	console.log(req.query);
+	
+	console.log(req.query.name);
+	console.log('llamando');
 	User.findOne({
 		name: req.query.name
 	}, function(err, user) {
+console.log('paSA');
+		if (err) {
+ res.status(400); res.send(err);
+				throw err;
 
-		if (err) throw err;
+		};
 
 		if (!user) {
 			res.json({ success: false, message: 'Authentication failed. User not found.' });

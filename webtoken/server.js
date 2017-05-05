@@ -40,6 +40,8 @@ app.use(express.static(__dirname + '/public'));
 app.post('/usuario', UsuariosCtrl.InsertarUsuario );
 
 Helper.Pagina('/registro','registro',{ title: "Registro de Usuarios"} , app);
+
+Helper.Pagina('/login','login',{ title: "Registro de Usuarios"} , app);
 Helper.Pagina('/demo','registro',{ title: "Diferente"},app);
 
 // Paginas Mongo
