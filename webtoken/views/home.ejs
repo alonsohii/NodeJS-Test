@@ -21,6 +21,10 @@
 $(document).ready(function() {
          $("#Notificacion").hide();
           $("#Correcto").hide();
+
+         $('#Notificacion').html(localStorage.getItem('tk'));
+            $("#Notificacion").show();
+
      $("#login").click(function(){
 
         $.post( "http://localhost:8080/api/authenticate", { name: $('#email').val() , password: $('#pw').val() })
@@ -70,29 +74,7 @@ $(document).ready(function() {
 <div class="alert alert-danger" id="Notificacion" >
  <p id="textnot" ></p>
 </div>
-                <div id="registrationForm2" class="form-horizontal fv-form fv-form-bootstrap" novalidate="novalidate"  target="none" action="">
-                 <!--  <button type="submit" class="fv-hidden-submit" style="display: none; width: 0px; height: 0px;"></button> -->
 
-
-    <div class="form-group">
-        <label class="col-xs-3 control-label">Usuario</label>
-        <div class="col-xs-5">
-            <input type="text" class="form-control" name="email" id="email" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-xs-3 control-label">Password</label>
-        <div class="col-xs-5">
-            <input type="password" class="form-control" name="pw" id="pw" />
-        </div>
-    </div>
-
-  
-
-    <div class="form-group">
-        <div class="col-xs-9 col-xs-offset-3">
-            <button class="btn btn-primary" name="signup" value="Sign up" id='login' >Acceso</button>
         </div>
     </div>
 </div>

@@ -3,11 +3,22 @@ var mongoose = require('mongoose'),
     db = require('../connection'),
     User   = require('../models/user'), // get our mongoose model
     Helper   = require('../helpers/general'); // get helper
+    crypto = require('crypto');
 
 exports.InsertarUsuario = function(req,res){
+//var hash = crypto.createHash('sha1');
 
 //connection.query("INSERT INTO `bp_personas` (`idbp_personas`, `username`, `nombre`, `apellido`, `segundoapellido`, `correo`, `pw`, `fkidcatPaises`, `idcatEstado`, `idcatPersonaEstado`, `fecharegistro`, `sexo`, `subcorreo`, `idciudad`, `Ciudad`) VALUES (NULL, NULL, 'Mario', 'Hernandez', 'Iniguez', 'alonsohi@hotmail.com', 'mario123', ' 1', '1', '0', '2017-02-14 00:00:00', '1', 'demo@hotmail.com', NULL, 'mexicali');", function(err, rows, fields) {
   var data = req.body;
+
+// https://ciphertrick.com/2016/01/18/salt-hash-passwords-using-nodejs-crypto/
+
+const secret = 'webos con frijoles@327';
+const hash = crypto.createHmac('sha256', secret)
+                   .update(data.pw)
+                   .digest('hex');
+
+
 
   var usuario = {
 
@@ -17,7 +28,7 @@ exports.InsertarUsuario = function(req,res){
     apellido: data.lastName, 
     segundoapellido: null,
     correo:data.email, 
-    pw: data.pw, 
+    pw:  hash, 
     fkidcatPaises: data.ComboPaises,
     idcatEstado:1, 
     idcatPersonaEstado:0,

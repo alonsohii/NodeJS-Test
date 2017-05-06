@@ -44,11 +44,16 @@ Helper.Pagina('/registro','registro',{ title: "Registro de Usuarios"} , app);
 Helper.Pagina('/login','login',{ title: "Registro de Usuarios"} , app);
 Helper.Pagina('/demo','registro',{ title: "Diferente"},app);
 
+
+Helper.Pagina('/home','home',{ title: "Inicio"},app);
+
 // Paginas Mongo
 
 app.get('/setup', UsuariosCtrl.UsuarioMongoDb);
 app.get('/paises', PaisesCtrl.CatalogoPaises );
 app.get('/visitante', PaisesCtrl.Visitante );
+
+
 
 // ---------------------------------------------------------
 // get an instance of the router for api routes
@@ -60,7 +65,7 @@ var apiRoutes = express.Router();
 // authentication (no middleware necessary since this isnt authenticated)
 // ---------------------------------------------------------
 // http://localhost:8080/api/authenticate
-apiRoutes.post('/authenticate', AutCtrl.autentificar);
+apiRoutes.post('/authenticate', AutCtrl.autentificarMysql);
 
 // ---------------------------------------------------------
 // route middleware to authenticate and check token
